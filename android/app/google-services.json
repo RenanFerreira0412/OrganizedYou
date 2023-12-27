@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "232514222897",
+    "project_id": "organizedyou",
+    "storage_bucket": "organizedyou.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:232514222897:android:95523e641167ca52284e10",
+        "android_client_info": {
+          "package_name": "com.example.organized_you"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAtITG7O2jxCCA-xSHsqC8EM3lHBV9szpc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
