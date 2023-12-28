@@ -40,19 +40,43 @@ class AuthService extends ChangeNotifier {
     notifyListeners();
   }
 
+  handleAuthError(FirebaseException e) {
+    switch (e.code) {
+      case 'invalid-credential':
+        throw AuthException('E-mail ou senha inválidos.');
+
+      case 'invalid-email':
+        throw AuthException('Email inválido.');
+
+      case 'user-not-found':
+        throw AuthException('Usuário não encontrado.');
+
+      case 'wrong-password':
+        throw AuthException('Senha incorreta!');
+
+      case 'email-already-in-use':
+        throw AuthException('Este email já está cadastrado.');
+
+      case 'weak-password':
+        throw AuthException('A senha precisa ter no mínimo 6 caracteres!');
+
+      case 'account-exists-with-different-credential':
+        throw AuthException('A conta já existe com uma credencial diferente.');
+
+      default:
+        throw AuthException('Erro desconhecido');
+    }
+  }
+
   // Cadastro de conta
-  registrar(String name, String email, String password) async {
+  register(String name, String email, String password) async {
     try {
       UserCredential userCredential = await _auth
           .createUserWithEmailAndPassword(email: email, password: password);
       _getUser();
       addUser(userCredential.user!.uid, name, email);
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        throw AuthException('A senha é muito fraca!');
-      } else if (e.code == 'email-already-in-use') {
-        throw AuthException('Este email já está cadastrado');
-      }
+      handleAuthError(e);
     }
   }
 
@@ -62,10 +86,7 @@ class AuthService extends ChangeNotifier {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
       _getUser();
     } on FirebaseAuthException catch (e) {
-      debugPrint(e.code);
-      if (e.code == 'invalid-credential') {
-        throw AuthException('E-mail ou senha inválidos.');
-      }
+      handleAuthError(e);
     }
   }
 
@@ -84,6 +105,17 @@ class AuthService extends ChangeNotifier {
       'email': email,
       'creation_date': timeNow,
     });
+  }
+
+  // Trocar de senha
+  Future<void> resetPassword(String email) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+    } on FirebaseAuthException catch (e) {
+      debugPrint('$e');
+
+      handleAuthError(e);
+    }
   }
 
   // Login com o Google
@@ -110,7 +142,7 @@ class AuthService extends ChangeNotifier {
 
         _getUser();
       } on FirebaseAuthException catch (e) {
-        debugPrint(e.toString());
+        handleAuthError(e);
       }
     } else {
       // Trigger the authentication flow
@@ -144,7 +176,36 @@ class AuthService extends ChangeNotifier {
 
         _getUser();
       } on FirebaseAuthException catch (e) {
-        debugPrint(e.toString());
+        handleAuthError(e);
+      }
+    }
+  }
+
+  // Tratando os erros account-exists-with-different-credential
+  void accountError(FirebaseAuthException e) async {
+    debugPrint('erro ${e.toString()}');
+    if (e.code == 'account-exists-with-different-credential') {
+      // A conta já existe com uma credencial diferente
+      String? email = e.email;
+      AuthCredential? pendingCredential = e.credential;
+
+      // Obtenha uma lista de quais métodos de login existem para o usuário conflitante
+      List<String> userSignInMethods =
+          await _auth.fetchSignInMethodsForEmail(email!);
+
+      // O primeiro método na lista será o recomendado para ser utilizado
+      if (userSignInMethods.first == 'password') {
+        // Senha informada pelo usuário
+        String password = "...";
+
+        // Logando o usuário na sua conta com a sua senha
+        UserCredential userCredencial = await _auth.signInWithEmailAndPassword(
+            email: email, password: password);
+
+        // Vincule a credencial pendente à conta existente
+        await userCredencial.user!.linkWithCredential(pendingCredential!);
+
+        _getUser();
       }
     }
   }

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:organized_you/services/auth_service.dart';
 import 'package:organized_you/ui/auth/login_form.dart';
 import 'package:organized_you/ui/auth/register_form.dart';
+import 'package:organized_you/ui/auth/reset_password_form.dart';
+import 'package:organized_you/utils/utils.dart';
 import 'package:provider/provider.dart';
 import 'package:social_login_buttons/social_login_buttons.dart';
 
@@ -16,6 +18,7 @@ class _AuthUIState extends State<AuthUI> {
   // Gerenciador dos formulários
   final formLoginKey = GlobalKey<FormState>();
   final formRegisterKey = GlobalKey<FormState>();
+  final formResetPasswordKey = GlobalKey<FormState>();
 
   // Controladores
   final name = TextEditingController();
@@ -24,30 +27,48 @@ class _AuthUIState extends State<AuthUI> {
   final emailRegister = TextEditingController();
   final passwordRegister = TextEditingController();
   final confirmPassword = TextEditingController();
+  final emailResetPassword = TextEditingController();
 
-  // Textos
+  // Variáveis de Controle
   bool isLogin = true;
+  bool isResetPasswordForm = false;
+  bool loading = false;
+
   late String title;
   late String actionButton;
   late String toggleButton;
+  late String toggleResetPasswordButton;
   late Widget form;
-  bool loading = false;
 
   @override
   void initState() {
     super.initState();
-    setFormAction(true);
+    setFormAction(true, false);
   }
 
-  setFormAction(bool acao) {
+  setFormAction(bool acao, bool forgotPswForm) {
     setState(() {
       isLogin = acao;
+      isResetPasswordForm = forgotPswForm;
+
       if (isLogin) {
-        title = 'Bem vindo';
-        actionButton = 'Login';
-        toggleButton = 'Ainda não tem conta? Cadastre-se agora.';
-        form = LoginForm(
-            email: emailLogin, password: passwordLogin, formKey: formLoginKey);
+        if (isResetPasswordForm) {
+          title = 'Recuperar senha';
+          actionButton = 'Enviar';
+          toggleButton = 'Ainda não tem conta? Cadastre-se agora.';
+          toggleResetPasswordButton = "Voltar";
+          form = ResetPasswordForm(
+              email: emailResetPassword, formKey: formResetPasswordKey);
+        } else {
+          title = 'Bem vindo';
+          actionButton = 'Login';
+          toggleButton = 'Ainda não tem conta? Cadastre-se agora.';
+          toggleResetPasswordButton = 'Esqueceu sua senha ?';
+          form = LoginForm(
+              email: emailLogin,
+              password: passwordLogin,
+              formKey: formLoginKey);
+        }
       } else {
         title = 'Crie sua conta';
         actionButton = 'Cadastrar';
@@ -70,21 +91,40 @@ class _AuthUIState extends State<AuthUI> {
           .login(emailLogin.text, passwordLogin.text);
     } on AuthException catch (e) {
       setState(() => loading = false);
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(e.message)));
+      Utils.schowSnackBar(e.message);
     }
   }
 
-  registrar() async {
+  register() async {
     setState(() => loading = true);
     try {
       await context
           .read<AuthService>()
-          .registrar(name.text, emailRegister.text, passwordRegister.text);
+          .register(name.text, emailRegister.text, passwordRegister.text);
     } on AuthException catch (e) {
       setState(() => loading = false);
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(e.message)));
+      Utils.schowSnackBar(e.message);
+    }
+  }
+
+  signInWithGoogle() async {
+    try {
+      await context.read<AuthService>().signInWithGoogle();
+    } on AuthException catch (e) {
+      Utils.schowSnackBar(e.message);
+    }
+  }
+
+  resetPassword() async {
+    try {
+      await context.read<AuthService>().resetPassword(emailResetPassword.text);
+
+      String message =
+          'Pronto! Um link para criação de uma nova senha foi enviado para o seu e-mail.';
+
+      Utils.schowSnackBar(message);
+    } on AuthException catch (e) {
+      Utils.schowSnackBar(e.message);
     }
   }
 
@@ -105,22 +145,45 @@ class _AuthUIState extends State<AuthUI> {
                   letterSpacing: -1.5,
                 ),
               ),
-              TextButton(
-                onPressed: () => setFormAction(!isLogin),
-                child: Text(toggleButton),
-              ),
+              if (!isResetPasswordForm) ...[
+                TextButton(
+                  onPressed: () => setFormAction(!isLogin, false),
+                  child: Text(toggleButton),
+                )
+              ] else ...[
+                const Text(
+                    'Um link de recuperação de senha será enviado para o endereço de e-mail fornecido por você.')
+              ],
               form,
+              if (isLogin) ...[
+                TextButton(
+                    onPressed: () =>
+                        setFormAction(isLogin, !isResetPasswordForm),
+                    child: Text(
+                      toggleResetPasswordButton,
+                      textAlign: TextAlign.center,
+                    )),
+              ],
               Padding(
                 padding: const EdgeInsets.all(24.0),
                 child: ElevatedButton(
                   onPressed: () {
                     if (isLogin) {
-                      if (formLoginKey.currentState!.validate()) {
-                        login();
+                      if (isResetPasswordForm) {
+                        if (formResetPasswordKey.currentState!.validate()) {
+                          resetPassword();
+                          cleanForm();
+                        }
+                      } else {
+                        if (formLoginKey.currentState!.validate()) {
+                          login();
+                          cleanForm();
+                        }
                       }
                     } else {
                       if (formRegisterKey.currentState!.validate()) {
-                        registrar();
+                        register();
+                        cleanForm();
                       }
                     }
                   },
@@ -152,14 +215,12 @@ class _AuthUIState extends State<AuthUI> {
                   ),
                 ),
               ),
-              if (isLogin) ...[
+              if (!isResetPasswordForm && isLogin) ...[
                 SocialLoginButton(
                   text: 'Conectar-se com Google',
                   borderRadius: 10,
                   buttonType: SocialLoginButtonType.google,
-                  onPressed: () async {
-                    await context.read<AuthService>().signInWithGoogle();
-                  },
+                  onPressed: () => signInWithGoogle(),
                 ),
               ]
             ],
@@ -167,5 +228,15 @@ class _AuthUIState extends State<AuthUI> {
         ),
       ),
     );
+  }
+
+  void cleanForm() {
+    name.clear();
+    emailLogin.clear();
+    passwordLogin.clear();
+    emailRegister.clear();
+    passwordRegister.clear();
+    confirmPassword.clear();
+    emailResetPassword.clear();
   }
 }
