@@ -39,7 +39,11 @@ dependencies:
   firebase_auth: ^4.15.3
   cloud_firestore: ^4.13.6
   firebase_messaging: ^14.7.9
+  provider: ^6.1.1
+  google_sign_in: ^6.1.6
   line_icons: ^2.0.3
+  email_validator: ^2.1.17
+  social_login_buttons: ^1.0.7
 
 dev_dependencies:
   flutter_test:
