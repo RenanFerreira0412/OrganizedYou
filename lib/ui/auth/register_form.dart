@@ -63,6 +63,7 @@ class _RegisterFormState extends State<RegisterForm> {
                 maxLength: 100,
                 maxLines: 1,
                 isPasswordField: false,
+                readOnly: false,
                 keyboardType: TextInputType.name),
             Editor(
                 controller: widget.email,
@@ -72,6 +73,7 @@ class _RegisterFormState extends State<RegisterForm> {
                 maxLength: 50,
                 maxLines: 1,
                 isPasswordField: false,
+                readOnly: false,
                 keyboardType: TextInputType.emailAddress),
             Editor(
                 controller: widget.password,
@@ -81,6 +83,7 @@ class _RegisterFormState extends State<RegisterForm> {
                 maxLength: 50,
                 maxLines: 1,
                 isPasswordField: true,
+                readOnly: false,
                 keyboardType: TextInputType.visiblePassword),
             Editor(
                 controller: widget.confirmPassword,
@@ -90,6 +93,7 @@ class _RegisterFormState extends State<RegisterForm> {
                 maxLength: 50,
                 maxLines: 1,
                 isPasswordField: true,
+                readOnly: false,
                 keyboardType: TextInputType.visiblePassword)
           ],
         ));

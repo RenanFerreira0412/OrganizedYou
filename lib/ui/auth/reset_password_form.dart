@@ -23,6 +23,7 @@ class ResetPasswordForm extends StatelessWidget {
               maxLength: 50,
               maxLines: 1,
               isPasswordField: false,
+              readOnly: false,
               keyboardType: TextInputType.emailAddress),
         ],
       ),

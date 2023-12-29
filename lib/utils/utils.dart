@@ -34,4 +34,16 @@ class Utils {
   }
 
   static String strDigits(int n) => n.toString().padLeft(2, '0');
+
+  static List<String> categories = ["Acadêmico", "Pessoal", "Trabalho"];
+
+  static Color? chipColor(String category) {
+    var data = {
+      "Acadêmico": const Color(0xffEF5350),
+      "Pessoal": const Color(0xff7E57C2),
+      "Trabalho": const Color(0xff66BB6A)
+    };
+
+    return data[category];
+  }
 }

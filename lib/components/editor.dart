@@ -10,6 +10,8 @@ class Editor extends StatefulWidget {
   final TextInputType keyboardType;
   final bool isPasswordField;
   final FormFieldValidator validator;
+  final bool readOnly;
+  final VoidCallback? action;
 
   const Editor(
       {super.key,
@@ -20,7 +22,9 @@ class Editor extends StatefulWidget {
       required this.maxLength,
       required this.maxLines,
       required this.isPasswordField,
-      required this.keyboardType});
+      required this.keyboardType,
+      this.action,
+      required this.readOnly});
 
   @override
   State<Editor> createState() => _EditorState();
@@ -47,6 +51,8 @@ class _EditorState extends State<Editor> {
         maxLines: widget.maxLines,
         keyboardType: widget.keyboardType,
         obscureText: _seePassword,
+        readOnly: widget.readOnly,
+        onTap: widget.action,
         decoration: InputDecoration(
           labelText: widget.labelText,
           hintText: widget.hintText,

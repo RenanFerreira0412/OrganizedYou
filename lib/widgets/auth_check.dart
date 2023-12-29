@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:organized_you/services/auth_service.dart';
 import 'package:organized_you/ui/auth/auth_ui.dart';
-import 'package:organized_you/ui/main/home_ui.dart';
+import 'package:organized_you/ui/main/home/home_ui.dart';
 import 'package:provider/provider.dart';
 
 class AuthCheck extends StatefulWidget {
@@ -18,7 +18,7 @@ class _AuthCheckState extends State<AuthCheck> {
 
     if (auth.isLoading) {
       return loading();
-    } else if (auth.user == null) {
+    } else if (auth.usuario == null) {
       return const AuthUI();
     } else {
       return const HomeUI();

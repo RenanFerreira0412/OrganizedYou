@@ -13,11 +13,16 @@ class AuthService extends ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final CollectionReference users =
       FirebaseFirestore.instance.collection('users');
-  User? user;
+  User? usuario;
   bool isLoading = true;
 
   AuthService() {
     _authCheck();
+  }
+
+  // Pega o ID do usuário
+  userId() {
+    return _auth.currentUser?.uid;
   }
 
   final googleSignIn = GoogleSignIn();
@@ -29,14 +34,14 @@ class AuthService extends ChangeNotifier {
   // Verificação do estado do usuário (autenticado ou não)
   _authCheck() {
     _auth.authStateChanges().listen((User? user) {
-      user = (user == null) ? null : user;
+      usuario = (user == null) ? null : user;
       isLoading = false;
       notifyListeners();
     });
   }
 
   _getUser() {
-    user = _auth.currentUser;
+    usuario = _auth.currentUser;
     notifyListeners();
   }
 

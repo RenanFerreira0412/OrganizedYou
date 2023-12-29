@@ -32,6 +32,7 @@ class _LoginFormState extends State<LoginForm> {
               maxLength: 50,
               maxLines: 1,
               isPasswordField: false,
+              readOnly: false,
               keyboardType: TextInputType.emailAddress),
           Editor(
               controller: widget.password,
@@ -41,6 +42,7 @@ class _LoginFormState extends State<LoginForm> {
               maxLength: 50,
               maxLines: 1,
               isPasswordField: true,
+              readOnly: false,
               keyboardType: TextInputType.visiblePassword)
         ],
       ),
