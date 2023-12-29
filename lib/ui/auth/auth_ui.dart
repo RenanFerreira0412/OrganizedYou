@@ -134,96 +134,101 @@ class _AuthUIState extends State<AuthUI> {
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 35,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: -1.5,
-                ),
-              ),
-              if (!isResetPasswordForm) ...[
-                TextButton(
-                  onPressed: () => setFormAction(!isLogin, false),
-                  child: Text(toggleButton),
-                )
-              ] else ...[
-                const Text(
-                    'Um link de recuperação de senha será enviado para o endereço de e-mail fornecido por você.')
-              ],
-              form,
-              if (isLogin) ...[
-                TextButton(
-                    onPressed: () =>
-                        setFormAction(isLogin, !isResetPasswordForm),
-                    child: Text(
-                      toggleResetPasswordButton,
-                      textAlign: TextAlign.center,
-                    )),
-              ],
-              Padding(
-                padding: const EdgeInsets.all(24.0),
-                child: ElevatedButton(
-                  onPressed: () {
-                    if (isLogin) {
-                      if (isResetPasswordForm) {
-                        if (formResetPasswordKey.currentState!.validate()) {
-                          resetPassword();
-                          cleanForm();
-                        }
-                      } else {
-                        if (formLoginKey.currentState!.validate()) {
-                          login();
-                          cleanForm();
-                        }
-                      }
-                    } else {
-                      if (formRegisterKey.currentState!.validate()) {
-                        register();
-                        cleanForm();
-                      }
-                    }
-                  },
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: (loading)
-                        ? [
-                            const Padding(
-                              padding: EdgeInsets.all(16),
-                              child: SizedBox(
-                                width: 24,
-                                height: 24,
-                                child: CircularProgressIndicator(
-                                  color: Colors.white,
-                                ),
-                              ),
-                            )
-                          ]
-                        : [
-                            const Icon(Icons.check),
-                            Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Text(
-                                actionButton,
-                                style: const TextStyle(fontSize: 20),
-                              ),
-                            ),
-                          ],
+          child: Center(
+            child: Container(
+              constraints: const BoxConstraints(maxWidth: 500),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      fontSize: 35,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: -1.5,
+                    ),
                   ),
-                ),
+                  if (!isResetPasswordForm) ...[
+                    TextButton(
+                      onPressed: () => setFormAction(!isLogin, false),
+                      child: Text(toggleButton),
+                    )
+                  ] else ...[
+                    const Text(
+                        'Um link de recuperação de senha será enviado para o endereço de e-mail fornecido por você.')
+                  ],
+                  form,
+                  if (isLogin) ...[
+                    TextButton(
+                        onPressed: () =>
+                            setFormAction(isLogin, !isResetPasswordForm),
+                        child: Text(
+                          toggleResetPasswordButton,
+                          textAlign: TextAlign.center,
+                        )),
+                  ],
+                  Padding(
+                    padding: const EdgeInsets.all(24.0),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        if (isLogin) {
+                          if (isResetPasswordForm) {
+                            if (formResetPasswordKey.currentState!.validate()) {
+                              resetPassword();
+                              cleanForm();
+                            }
+                          } else {
+                            if (formLoginKey.currentState!.validate()) {
+                              login();
+                              cleanForm();
+                            }
+                          }
+                        } else {
+                          if (formRegisterKey.currentState!.validate()) {
+                            register();
+                            cleanForm();
+                          }
+                        }
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: (loading)
+                            ? [
+                                const Padding(
+                                  padding: EdgeInsets.all(16),
+                                  child: SizedBox(
+                                    width: 24,
+                                    height: 24,
+                                    child: CircularProgressIndicator(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                )
+                              ]
+                            : [
+                                const Icon(Icons.check),
+                                Padding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: Text(
+                                    actionButton,
+                                    style: const TextStyle(fontSize: 20),
+                                  ),
+                                ),
+                              ],
+                      ),
+                    ),
+                  ),
+                  if (!isResetPasswordForm && isLogin) ...[
+                    SocialLoginButton(
+                      text: 'Conectar-se com Google',
+                      borderRadius: 10,
+                      buttonType: SocialLoginButtonType.google,
+                      onPressed: () => signInWithGoogle(),
+                    ),
+                  ]
+                ],
               ),
-              if (!isResetPasswordForm && isLogin) ...[
-                SocialLoginButton(
-                  text: 'Conectar-se com Google',
-                  borderRadius: 10,
-                  buttonType: SocialLoginButtonType.google,
-                  onPressed: () => signInWithGoogle(),
-                ),
-              ]
-            ],
+            ),
           ),
         ),
       ),

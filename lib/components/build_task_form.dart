@@ -63,6 +63,7 @@ class _BuildTaskFormState extends State<BuildTaskForm> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      scrollable: true,
       title: widget.isEditing
           ? const Text('Editar Tarefa')
           : const Text('Cadastrar Tarefa'),

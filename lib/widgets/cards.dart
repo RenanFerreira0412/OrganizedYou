@@ -16,11 +16,12 @@ class TaskCard extends StatefulWidget {
 
 class _TaskCardState extends State<TaskCard> {
   late TaskController task;
-  bool light = false;
+  bool? light;
 
   @override
   void initState() {
     super.initState();
+    light = widget.task.isFinished;
     task = TaskController();
   }
 
@@ -38,7 +39,7 @@ class _TaskCardState extends State<TaskCard> {
         Row(
           children: [
             Switch(
-              value: light,
+              value: light!,
               activeColor: widget.chipColor,
               onChanged: (bool value) {
                 setState(() {

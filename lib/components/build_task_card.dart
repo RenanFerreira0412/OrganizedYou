@@ -39,11 +39,15 @@ class _BuildTaskCardState extends State<BuildTaskCard> {
           .where('category', isEqualTo: widget.category)
           .snapshots();
     } else {
-      debugPrint(widget.isFinished.toString());
-      taskStream = controller.tasks
-          .where('uid', isEqualTo: auth.userId())
-          .where('is_finished', isEqualTo: widget.isFinished)
-          .snapshots();
+      if (widget.isFinished != null) {
+        taskStream = controller.tasks
+            .where('uid', isEqualTo: auth.userId())
+            .where('is_finished', isEqualTo: widget.isFinished)
+            .snapshots();
+      } else {
+        taskStream =
+            controller.tasks.where('uid', isEqualTo: auth.userId()).snapshots();
+      }
     }
   }
 
@@ -61,6 +65,10 @@ class _BuildTaskCardState extends State<BuildTaskCard> {
         }
 
         return GridView.count(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          mainAxisSpacing: 10,
+          crossAxisSpacing: 10,
+          childAspectRatio: 1.5,
           crossAxisCount: Responsive.isDesktop(context)
               ? 3
               : Responsive.isTablet(context)
@@ -71,7 +79,7 @@ class _BuildTaskCardState extends State<BuildTaskCard> {
                 document.data()! as Map<String, dynamic>;
             Task task = Task(
                 id: document.id,
-                isFinished: false,
+                isFinished: data['is_finished'],
                 uid: auth.userId(),
                 title: data['title'],
                 description: data['description'],

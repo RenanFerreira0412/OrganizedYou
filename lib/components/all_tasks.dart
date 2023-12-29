@@ -15,29 +15,24 @@ class _AllTasksState extends State<AllTasks> {
   @override
   void initState() {
     super.initState();
-    onSwitchValueChanged(true);
+    onSwitchValueChanged(false);
   }
 
   onSwitchValueChanged(bool action) {
     setState(() {
       isFinished = action;
-      tasks = _buildTasksWidget(); // Call a function to build the tasks widget
+      tasks = _buildTasksWidget();
     });
   }
 
   Widget _buildTasksWidget() {
     if (isFinished) {
-      return const Expanded(
-        child: BuildTaskCard(
-          isFinished: true,
-        ),
+      return BuildTaskCard(
+        key: Key(isFinished.toString()),
+        isFinished: isFinished,
       );
     } else {
-      return const Expanded(
-        child: BuildTaskCard(
-          isFinished: false,
-        ),
-      );
+      return const BuildTaskCard();
     }
   }
 
@@ -45,7 +40,6 @@ class _AllTasksState extends State<AllTasks> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(isFinished.toString()),
         Row(
           children: [
             Switch(
@@ -64,7 +58,7 @@ class _AllTasksState extends State<AllTasks> {
             )
           ],
         ),
-        tasks
+        Expanded(child: tasks)
       ],
     );
   }
