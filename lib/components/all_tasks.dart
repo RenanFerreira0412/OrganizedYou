@@ -40,23 +40,26 @@ class _AllTasksState extends State<AllTasks> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Row(
-          children: [
-            Switch(
-              value: isFinished,
-              activeColor: Colors.blue,
-              onChanged: (bool value) {
-                setState(() {
-                  isFinished = value;
-                  onSwitchValueChanged(value);
-                });
-              },
-            ),
-            const Text(
-              'Mostrar apenas as tarefas finalizadas.',
-              textAlign: TextAlign.start,
-            )
-          ],
+        Padding(
+          padding: const EdgeInsets.only(left: 16, top: 20),
+          child: Row(
+            children: [
+              Switch(
+                value: isFinished,
+                activeColor: Colors.blue,
+                onChanged: (bool value) {
+                  setState(() {
+                    isFinished = value;
+                    onSwitchValueChanged(value);
+                  });
+                },
+              ),
+              const Text(
+                'Mostrar apenas as tarefas finalizadas.',
+                textAlign: TextAlign.start,
+              )
+            ],
+          ),
         ),
         Expanded(child: tasks)
       ],

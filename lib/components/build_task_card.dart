@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:organized_you/controllers/task_controller.dart';
 import 'package:organized_you/models/task.dart';
-import 'package:organized_you/responsive/responsive.dart';
 import 'package:organized_you/services/auth_service.dart';
 import 'package:organized_you/utils/utils.dart';
 import 'package:organized_you/widgets/cards.dart';
@@ -42,7 +41,7 @@ class _BuildTaskCardState extends State<BuildTaskCard> {
       if (widget.isFinished != null) {
         taskStream = controller.tasks
             .where('uid', isEqualTo: auth.userId())
-            .where('is_finished', isEqualTo: widget.isFinished)
+            .where('is_finished', isEqualTo: true)
             .snapshots();
       } else {
         taskStream =
@@ -53,6 +52,7 @@ class _BuildTaskCardState extends State<BuildTaskCard> {
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
     return StreamBuilder<QuerySnapshot>(
       stream: taskStream,
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -64,17 +64,38 @@ class _BuildTaskCardState extends State<BuildTaskCard> {
           return const Center(child: CircularProgressIndicator());
         }
 
-        return GridView.count(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          mainAxisSpacing: 10,
-          crossAxisSpacing: 10,
-          childAspectRatio: 1.5,
-          crossAxisCount: Responsive.isDesktop(context)
-              ? 3
-              : Responsive.isTablet(context)
-                  ? 2
-                  : 1,
-          children: snapshot.data!.docs.map((DocumentSnapshot document) {
+        return GridView.builder(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: (width > 1300)
+                ? 3
+                : (width > 1000 && width < 1300)
+                    ? 2
+                    : 1,
+            mainAxisSpacing: 10,
+            crossAxisSpacing: 10,
+            childAspectRatio: (width > 1300)
+                ? 1.5
+                : (width > 1200 && width < 1300)
+                    ? 2
+                    : (width > 1000 && width < 1200)
+                        ? 1.5
+                        : (width > 820 && width < 1000)
+                            ? 2.4
+                            : (width >= 790 && width < 820)
+                                ? 2.1
+                                : (width >= 650 && width < 790)
+                                    ? 2.4
+                                    : (width >= 540 && width < 650)
+                                        ? 2
+                                        : (width >= 460 && width < 540)
+                                            ? 1.8
+                                            : (width >= 390 && width < 460)
+                                                ? 1.5
+                                                : 1,
+          ),
+          itemBuilder: (context, index) {
+            DocumentSnapshot document = snapshot.data!.docs[index];
             Map<String, dynamic> data =
                 document.data()! as Map<String, dynamic>;
             Task task = Task(
@@ -89,7 +110,8 @@ class _BuildTaskCardState extends State<BuildTaskCard> {
             Color? chipColor = Utils.chipColor(task.category);
 
             return TaskCard(task: task, chipColor: chipColor);
-          }).toList(),
+          },
+          itemCount: snapshot.data!.docs.length,
         );
       },
     );

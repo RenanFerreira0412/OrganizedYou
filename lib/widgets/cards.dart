@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:organized_you/components/build_task_form.dart';
 import 'package:organized_you/controllers/task_controller.dart';
 import 'package:organized_you/models/task.dart';
+import 'package:organized_you/theme/app_theme.dart';
 import 'package:organized_you/utils/utils.dart';
 
 class TaskCard extends StatefulWidget {
@@ -16,7 +17,7 @@ class TaskCard extends StatefulWidget {
 
 class _TaskCardState extends State<TaskCard> {
   late TaskController task;
-  bool? light;
+  late bool light;
 
   @override
   void initState() {
@@ -32,14 +33,18 @@ class _TaskCardState extends State<TaskCard> {
       children: [
         Chip(
           backgroundColor: widget.chipColor,
+          side: BorderSide(width: 0, color: widget.chipColor!),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
-          label: Text(widget.task.category),
+          label: Text(
+            widget.task.category,
+            style: AppTheme.typo.medium(12, Colors.black, 1.5, 1.5),
+          ),
         ),
         Row(
           children: [
             Switch(
-              value: light!,
+              value: light,
               activeColor: widget.chipColor,
               onChanged: (bool value) {
                 setState(() {
@@ -67,11 +72,13 @@ class _TaskCardState extends State<TaskCard> {
       children: [
         Text(
           widget.task.title,
+          style: AppTheme.typo.bold(20, Colors.black, 1.5, 1.5),
           textAlign: TextAlign.start,
         ),
         Utils.addVerticalSpace(10),
         Text(
           widget.task.description,
+          style: AppTheme.typo.regular(15, Colors.black, 1.5, 1.5),
           textAlign: TextAlign.start,
         )
       ],
@@ -83,6 +90,7 @@ class _TaskCardState extends State<TaskCard> {
       alignment: Alignment.bottomRight,
       child: Text(
         widget.task.date,
+        style: AppTheme.typo.medium(13, Colors.black54, 1.5, 1.5),
         textAlign: TextAlign.start,
       ),
     );
@@ -91,19 +99,20 @@ class _TaskCardState extends State<TaskCard> {
   @override
   Widget build(BuildContext context) {
     return Card(
+        elevation: 4,
         child: Padding(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          cardHeader(),
-          Utils.addVerticalSpace(15),
-          cardBody(),
-          Utils.addVerticalSpace(30),
-          cardFooter()
-        ],
-      ),
-    ));
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              cardHeader(),
+              Utils.addVerticalSpace(15),
+              cardBody(),
+              Utils.addVerticalSpace(30),
+              cardFooter()
+            ],
+          ),
+        ));
   }
 
   Future<void> _openTaskForm(BuildContext context) {
@@ -144,6 +153,7 @@ class _TaskCardState extends State<TaskCard> {
               child: const Text('Deletar'),
               onPressed: () {
                 task.deleteTask(widget.task.id);
+                Utils.schowSnackBar('Tarefa deletada com sucesso!');
                 Navigator.of(context).pop();
               },
             ),

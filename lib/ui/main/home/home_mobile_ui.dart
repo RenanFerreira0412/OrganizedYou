@@ -38,7 +38,7 @@ class _HomeMobileUIState extends State<HomeMobileUI>
         actions: [
           IconButton(
             onPressed: () => auth.logout(),
-            icon: const Icon(Icons.exit_to_app_rounded),
+            icon: const Icon(Icons.logout_rounded),
           ),
         ],
       ),

@@ -66,76 +66,79 @@ class _BuildTaskFormState extends State<BuildTaskForm> {
       scrollable: true,
       title: widget.isEditing
           ? const Text('Editar Tarefa')
-          : const Text('Cadastrar Tarefa'),
-      content: Form(
-          key: formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // Campo assunto (título)
-              Editor(
-                  controller: title,
-                  labelText: 'Assunto',
-                  hintText: 'Assunto da tarefa',
-                  validator: FormValidation.validateField(),
-                  maxLength: 60,
-                  maxLines: 1,
-                  isPasswordField: false,
-                  readOnly: false,
-                  keyboardType: TextInputType.text),
+          : const Text('Adicionar Tarefa'),
+      content: SizedBox(
+        width: 500,
+        child: Form(
+            key: formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                // Campo assunto (título)
+                Editor(
+                    controller: title,
+                    labelText: 'Assunto',
+                    hintText: 'Assunto da tarefa',
+                    validator: FormValidation.validateField(),
+                    maxLength: 60,
+                    maxLines: 1,
+                    isPasswordField: false,
+                    readOnly: false,
+                    keyboardType: TextInputType.text),
 
-              // Campo categoria
-              DropdownButtonFormField(
-                  validator: FormValidation.validateField(),
-                  decoration: InputDecoration(
-                    labelText: 'Categoria',
-                    hintText: 'Selecione a categoria',
-                    helperText: 'Selecione a categoria',
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(5)),
-                  ),
-                  items:
-                      categories.map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem(
-                      value: value,
-                      child: Text(value),
-                    );
-                  }).toList(),
-                  value: category,
-                  onChanged: (String? value) {
-                    setState(() {
-                      category = value!;
-                    });
-                  }),
+                // Campo categoria
+                DropdownButtonFormField(
+                    validator: FormValidation.validateField(),
+                    decoration: InputDecoration(
+                      labelText: 'Categoria',
+                      hintText: 'Selecione a categoria',
+                      helperText: 'Selecione a categoria',
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5)),
+                    ),
+                    items: categories
+                        .map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                    value: category,
+                    onChanged: (String? value) {
+                      setState(() {
+                        category = value!;
+                      });
+                    }),
 
-              // Campo data
-              Editor(
-                  controller: date,
-                  labelText: 'Data',
-                  hintText: 'Data de entraga/finalização da tarefa',
-                  validator: FormValidation.validateField(),
-                  maxLength: 10,
-                  maxLines: 1,
-                  isPasswordField: false,
-                  readOnly: true,
-                  action: () => _selectDate(),
-                  keyboardType: TextInputType.datetime),
+                // Campo data
+                Editor(
+                    controller: date,
+                    labelText: 'Data',
+                    hintText: 'Data de entraga/finalização da tarefa',
+                    validator: FormValidation.validateField(),
+                    maxLength: 10,
+                    maxLines: 1,
+                    isPasswordField: false,
+                    readOnly: true,
+                    action: () => _selectDate(),
+                    keyboardType: TextInputType.datetime),
 
-              // Campo descrição
-              Editor(
-                  controller: description,
-                  labelText: 'Descrição',
-                  hintText: 'Descrição da tarefa',
-                  validator: FormValidation.validateField(),
-                  maxLength: 300,
-                  maxLines: 4,
-                  isPasswordField: false,
-                  readOnly: false,
-                  keyboardType: TextInputType.text),
-            ],
-          )),
+                // Campo descrição
+                Editor(
+                    controller: description,
+                    labelText: 'Descrição',
+                    hintText: 'Descrição da tarefa',
+                    validator: FormValidation.validateField(),
+                    maxLength: 300,
+                    maxLines: 4,
+                    isPasswordField: false,
+                    readOnly: false,
+                    keyboardType: TextInputType.text),
+              ],
+            )),
+      ),
       actions: <Widget>[
         TextButton(
           style: TextButton.styleFrom(
@@ -164,9 +167,11 @@ class _BuildTaskFormState extends State<BuildTaskForm> {
               if (widget.isEditing) {
                 // Editando a tarefa
                 task.updateTask(newTask, widget.task!.id);
+                Utils.schowSnackBar('Tarefa editada com sucesso!');
               } else {
                 // Adicionando a tarefa
                 task.createTask(newTask);
+                Utils.schowSnackBar('Tarefa cadastrada com sucesso!');
               }
               Navigator.of(context).pop();
             }
