@@ -3,6 +3,7 @@ import 'package:organized_you/components/all_tasks.dart';
 import 'package:organized_you/components/build_task_card.dart';
 import 'package:organized_you/components/build_task_form.dart';
 import 'package:organized_you/services/auth_service.dart';
+import 'package:organized_you/theme/app_theme.dart';
 import 'package:provider/provider.dart';
 
 class HomeMobileUI extends StatefulWidget {
@@ -67,7 +68,7 @@ class _HomeMobileUIState extends State<HomeMobileUI>
               duration: const Duration(milliseconds: 300),
               curve: Curves.easeInOut);
         },
-        indicatorColor: Colors.amber,
+        indicatorColor: AppTheme.colors.yellow,
         selectedIndex: currentPageIndex,
         destinations: const <Widget>[
           NavigationDestination(

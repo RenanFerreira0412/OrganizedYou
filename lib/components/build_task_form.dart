@@ -3,6 +3,7 @@ import 'package:organized_you/components/editor.dart';
 import 'package:organized_you/controllers/task_controller.dart';
 import 'package:organized_you/models/task.dart';
 import 'package:organized_you/services/auth_service.dart';
+import 'package:organized_you/theme/app_theme.dart';
 import 'package:organized_you/utils/utils.dart';
 import 'package:organized_you/validation/validation.dart';
 
@@ -65,8 +66,14 @@ class _BuildTaskFormState extends State<BuildTaskForm> {
     return AlertDialog(
       scrollable: true,
       title: widget.isEditing
-          ? const Text('Editar Tarefa')
-          : const Text('Adicionar Tarefa'),
+          ? Text(
+              'Editar Tarefa',
+              style: AppTheme.typo.medium(20, Colors.black, 1.5, 1.5),
+            )
+          : Text(
+              'Adicionar Tarefa',
+              style: AppTheme.typo.medium(20, Colors.black, 1.5, 1.5),
+            ),
       content: SizedBox(
         width: 500,
         child: Form(

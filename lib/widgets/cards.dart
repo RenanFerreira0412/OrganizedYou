@@ -99,7 +99,7 @@ class _TaskCardState extends State<TaskCard> {
   @override
   Widget build(BuildContext context) {
     return Card(
-        elevation: 4,
+        elevation: 5,
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
@@ -132,9 +132,13 @@ class _TaskCardState extends State<TaskCard> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Deletar Tarefa'),
-          content: const Text(
+          title: Text(
+            'Deletar Tarefa',
+            style: AppTheme.typo.medium(20, Colors.black, 1.5, 1.5),
+          ),
+          content: Text(
             'Esta ação irá deletar a sua tarefa.',
+            style: AppTheme.typo.regular(15, Colors.black, 1.5, 1.5),
           ),
           actions: <Widget>[
             TextButton(

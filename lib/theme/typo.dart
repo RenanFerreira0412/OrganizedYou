@@ -2,6 +2,13 @@ import 'package:flutter/material.dart';
 
 @immutable
 class AppTypo {
+  // Texto do Botão
+  final button = const TextStyle(
+      fontFamily: "Satoshi",
+      fontSize: 20,
+      fontWeight: FontWeight.w500,
+      letterSpacing: 0);
+
   // Texto preto
   TextStyle black(
           double size, Color color, double height, double letterSpacing) =>

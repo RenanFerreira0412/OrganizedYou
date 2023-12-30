@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:organized_you/services/auth_service.dart';
+import 'package:organized_you/theme/app_theme.dart';
 import 'package:organized_you/ui/auth/login_form.dart';
 import 'package:organized_you/ui/auth/register_form.dart';
 import 'package:organized_you/ui/auth/reset_password_form.dart';
@@ -136,40 +137,55 @@ class _AuthUIState extends State<AuthUI> {
           padding: const EdgeInsets.all(16),
           child: Center(
             child: Container(
-              constraints: const BoxConstraints(maxWidth: 500),
+              constraints: const BoxConstraints(
+                maxWidth: 500,
+              ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
                     title,
-                    style: const TextStyle(
-                      fontSize: 35,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: -1.5,
-                    ),
+                    style: AppTheme.typo.bold(35, Colors.black, 1.5, -1.5),
                   ),
                   if (!isResetPasswordForm) ...[
-                    TextButton(
-                      onPressed: () => setFormAction(!isLogin, false),
-                      child: Text(toggleButton),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 15),
+                      child: TextButton(
+                        onPressed: () => setFormAction(!isLogin, false),
+                        child: Text(toggleButton),
+                      ),
                     )
                   ] else ...[
-                    const Text(
-                        'Um link de recuperação de senha será enviado para o endereço de e-mail fornecido por você.')
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 15),
+                      child: Text(
+                        'Um link de recuperação de senha será enviado para o endereço de e-mail fornecido por você.',
+                        textAlign: TextAlign.start,
+                        style:
+                            AppTheme.typo.regular(15, Colors.black87, 1.5, 1.5),
+                      ),
+                    )
                   ],
                   form,
                   if (isLogin) ...[
-                    TextButton(
-                        onPressed: () =>
-                            setFormAction(isLogin, !isResetPasswordForm),
-                        child: Text(
-                          toggleResetPasswordButton,
-                          textAlign: TextAlign.center,
-                        )),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: TextButton(
+                          onPressed: () =>
+                              setFormAction(isLogin, !isResetPasswordForm),
+                          child: Text(
+                            toggleResetPasswordButton,
+                            textAlign: TextAlign.center,
+                          )),
+                    ),
                   ],
                   Padding(
-                    padding: const EdgeInsets.all(24.0),
+                    padding: const EdgeInsets.symmetric(vertical: 25),
                     child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          elevation: 2,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5))),
                       onPressed: () {
                         if (isLogin) {
                           if (isResetPasswordForm) {
@@ -195,7 +211,7 @@ class _AuthUIState extends State<AuthUI> {
                         children: (loading)
                             ? [
                                 const Padding(
-                                  padding: EdgeInsets.all(16),
+                                  padding: EdgeInsets.all(15),
                                   child: SizedBox(
                                     width: 24,
                                     height: 24,
@@ -208,10 +224,10 @@ class _AuthUIState extends State<AuthUI> {
                             : [
                                 const Icon(Icons.check),
                                 Padding(
-                                  padding: const EdgeInsets.all(16.0),
+                                  padding: const EdgeInsets.all(15),
                                   child: Text(
                                     actionButton,
-                                    style: const TextStyle(fontSize: 20),
+                                    style: AppTheme.typo.button,
                                   ),
                                 ),
                               ],
@@ -219,9 +235,23 @@ class _AuthUIState extends State<AuthUI> {
                     ),
                   ),
                   if (!isResetPasswordForm && isLogin) ...[
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 25),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const Expanded(child: Divider()),
+                          Utils.addHorizontalSpace(10),
+                          const Text('Ou'),
+                          Utils.addHorizontalSpace(10),
+                          const Expanded(child: Divider()),
+                        ],
+                      ),
+                    ),
                     SocialLoginButton(
                       text: 'Conectar-se com Google',
-                      borderRadius: 10,
+                      fontSize: 15,
+                      borderRadius: 5,
                       buttonType: SocialLoginButtonType.google,
                       onPressed: () => signInWithGoogle(),
                     ),
