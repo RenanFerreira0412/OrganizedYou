@@ -76,6 +76,7 @@ class _BuildTaskFormState extends State<BuildTaskForm> {
               'Adicionar Tarefa',
               style: AppTheme.typo.medium(20, AppTheme.colors.white, 1.5, 1.5),
             ),
+      buttonPadding: const EdgeInsets.all(20),
       content: SizedBox(
         width: 500,
         child: Form(

@@ -3,6 +3,7 @@ import 'package:organized_you/components/all_tasks.dart';
 import 'package:organized_you/components/build_task_card.dart';
 import 'package:organized_you/components/build_task_form.dart';
 import 'package:organized_you/services/auth_service.dart';
+import 'package:organized_you/theme/app_theme.dart';
 import 'package:provider/provider.dart';
 
 class HomeDesktopUI extends StatefulWidget {
@@ -56,6 +57,7 @@ class _HomeDesktopUIState extends State<HomeDesktopUI> {
     return LayoutBuilder(builder: (context, constraints) {
       return Scaffold(
         appBar: AppBar(
+          elevation: 0,
           title: const Text('Suas Tarefas'),
           actions: [
             IconButton(
@@ -68,6 +70,16 @@ class _HomeDesktopUIState extends State<HomeDesktopUI> {
           children: [
             SafeArea(
               child: NavigationRail(
+                backgroundColor: AppTheme.colors.dark,
+                indicatorColor: Colors.grey.shade800,
+                selectedIconTheme: IconThemeData(color: AppTheme.colors.white),
+                unselectedIconTheme:
+                    IconThemeData(color: AppTheme.colors.white),
+                selectedLabelTextStyle:
+                    AppTheme.typo.medium(15, AppTheme.colors.white, 1, 1.5),
+                unselectedLabelTextStyle:
+                    AppTheme.typo.medium(15, AppTheme.colors.white, 1, 1.5),
+                useIndicator: true,
                 extended: constraints.maxWidth >= 800,
                 labelType: constraints.maxWidth >= 800
                     ? NavigationRailLabelType.none
@@ -103,9 +115,14 @@ class _HomeDesktopUIState extends State<HomeDesktopUI> {
                 },
               ),
             ),
+            VerticalDivider(
+              thickness: 1,
+              width: 1,
+              color: Colors.grey.shade800,
+            ),
             Expanded(
               child: Container(
-                color: Theme.of(context).colorScheme.primaryContainer,
+                color: AppTheme.colors.dark,
                 child: page,
               ),
             ),
@@ -113,9 +130,10 @@ class _HomeDesktopUIState extends State<HomeDesktopUI> {
         ),
         floatingActionButton: FloatingActionButton.extended(
           onPressed: () => _openTaskForm(context),
-          tooltip: 'Adicionar Tarefa',
-          label: const Text('Adicionar Tarefa'),
+          tooltip: 'Criar Tarefa',
+          label: const Text('Criar Tarefa'),
           icon: const Icon(Icons.add),
+          backgroundColor: Colors.grey.shade800,
         ),
       );
     });

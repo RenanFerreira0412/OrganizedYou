@@ -149,6 +149,7 @@ class _TaskCardState extends State<TaskCard> {
             'Deletar Tarefa',
             style: AppTheme.typo.medium(20, AppTheme.colors.white, 1.5, 1.5),
           ),
+          buttonPadding: const EdgeInsets.all(20),
           content: Text(
             'Esta ação irá deletar a sua tarefa.',
             style: AppTheme.typo.regular(15, Colors.white54, 1, 1.5),
