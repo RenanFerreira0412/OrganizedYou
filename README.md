@@ -24,7 +24,7 @@ Organize suas atividades pessoais, acadêmicas e profissionais de maneira simple
 </p>
 
 - Versão Desktop
-![login_desktop](https://github.com/RenanFerreira0412/OrganizedYou/assets/96136397/4944df69-f972-49cf-899b-fbf2248cbeb5)
+![login_desktop](https://github.com/RenanFerreira0412/OrganizedYou/assets/96136397/dd79203f-b8a5-4c01-a5ac-ceb0167da96c)
 
 ![register_desktop](https://github.com/RenanFerreira0412/OrganizedYou/assets/96136397/7897b5bc-fdc7-41dd-8c9b-358d6220aebf)
 
