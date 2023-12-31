@@ -65,14 +65,16 @@ class _BuildTaskFormState extends State<BuildTaskForm> {
   Widget build(BuildContext context) {
     return AlertDialog(
       scrollable: true,
+      backgroundColor: AppTheme.colors.dark,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
       title: widget.isEditing
           ? Text(
               'Editar Tarefa',
-              style: AppTheme.typo.medium(20, Colors.black, 1.5, 1.5),
+              style: AppTheme.typo.medium(20, AppTheme.colors.white, 1.5, 1.5),
             )
           : Text(
               'Adicionar Tarefa',
-              style: AppTheme.typo.medium(20, Colors.black, 1.5, 1.5),
+              style: AppTheme.typo.medium(20, AppTheme.colors.white, 1.5, 1.5),
             ),
       content: SizedBox(
         width: 500,
@@ -98,6 +100,8 @@ class _BuildTaskFormState extends State<BuildTaskForm> {
                 // Campo categoria
                 DropdownButtonFormField(
                     validator: FormValidation.validateField(),
+                    style: AppTheme.typo
+                        .regular(13, AppTheme.colors.white, 1, 1.5),
                     decoration: InputDecoration(
                       labelText: 'Categoria',
                       hintText: 'Selecione a categoria',
@@ -105,6 +109,7 @@ class _BuildTaskFormState extends State<BuildTaskForm> {
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(5)),
                     ),
+                    dropdownColor: AppTheme.colors.dark,
                     items: categories
                         .map<DropdownMenuItem<String>>((String value) {
                       return DropdownMenuItem(
@@ -149,7 +154,11 @@ class _BuildTaskFormState extends State<BuildTaskForm> {
       actions: <Widget>[
         TextButton(
           style: TextButton.styleFrom(
-            textStyle: Theme.of(context).textTheme.labelLarge,
+            foregroundColor: AppTheme.colors.dark,
+            textStyle: AppTheme.typo.medium(15, AppTheme.colors.dark, 1, 1.5),
+            backgroundColor: AppTheme.colors.white,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
           ),
           child: const Text('Cancelar'),
           onPressed: () {
@@ -158,7 +167,11 @@ class _BuildTaskFormState extends State<BuildTaskForm> {
         ),
         TextButton(
           style: TextButton.styleFrom(
-            textStyle: Theme.of(context).textTheme.labelLarge,
+            foregroundColor: AppTheme.colors.dark,
+            textStyle: AppTheme.typo.medium(15, AppTheme.colors.dark, 1, 1.5),
+            backgroundColor: AppTheme.colors.white,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
           ),
           child: const Text('Salvar'),
           onPressed: () {

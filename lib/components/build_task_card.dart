@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:organized_you/controllers/task_controller.dart';
+import 'package:organized_you/models/card_color.dart';
 import 'package:organized_you/models/task.dart';
 import 'package:organized_you/services/auth_service.dart';
 import 'package:organized_you/utils/utils.dart';
@@ -72,7 +73,7 @@ class _BuildTaskCardState extends State<BuildTaskCard> {
                 : (width > 1000 && width < 1300)
                     ? 2
                     : 1,
-            mainAxisSpacing: 10,
+            mainAxisSpacing: 20,
             crossAxisSpacing: 10,
             childAspectRatio: (width > 1300)
                 ? 1.5
@@ -92,7 +93,7 @@ class _BuildTaskCardState extends State<BuildTaskCard> {
                                             ? 1.8
                                             : (width >= 390 && width < 460)
                                                 ? 1.5
-                                                : 1,
+                                                : 1.3,
           ),
           itemBuilder: (context, index) {
             DocumentSnapshot document = snapshot.data!.docs[index];
@@ -107,9 +108,9 @@ class _BuildTaskCardState extends State<BuildTaskCard> {
                 date: data['date'],
                 category: data['category']);
 
-            Color? chipColor = Utils.chipColor(task.category);
+            CardColor? cardColor = Utils.cardColor(task.category);
 
-            return TaskCard(task: task, chipColor: chipColor);
+            return TaskCard(task: task, cardColor: cardColor);
           },
           itemCount: snapshot.data!.docs.length,
         );

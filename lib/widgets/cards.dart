@@ -1,15 +1,17 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:organized_you/components/build_task_form.dart';
 import 'package:organized_you/controllers/task_controller.dart';
+import 'package:organized_you/models/card_color.dart';
 import 'package:organized_you/models/task.dart';
 import 'package:organized_you/theme/app_theme.dart';
 import 'package:organized_you/utils/utils.dart';
 
 class TaskCard extends StatefulWidget {
   final Task task;
-  final Color? chipColor;
+  final CardColor? cardColor;
 
-  const TaskCard({super.key, required this.chipColor, required this.task});
+  const TaskCard({super.key, required this.cardColor, required this.task});
 
   @override
   State<TaskCard> createState() => _TaskCardState();
@@ -32,10 +34,9 @@ class _TaskCardState extends State<TaskCard> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Chip(
-          backgroundColor: widget.chipColor,
-          side: BorderSide(width: 0, color: widget.chipColor!),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
+          backgroundColor: widget.cardColor!.primary,
+          shape: StadiumBorder(
+              side: BorderSide(width: 1, color: widget.cardColor!.secondary)),
           label: Text(
             widget.task.category,
             style: AppTheme.typo.medium(12, Colors.black, 1.5, 1.5),
@@ -43,9 +44,9 @@ class _TaskCardState extends State<TaskCard> {
         ),
         Row(
           children: [
-            Switch(
+            CupertinoSwitch(
               value: light,
-              activeColor: widget.chipColor,
+              activeColor: widget.cardColor!.secondary,
               onChanged: (bool value) {
                 setState(() {
                   light = value;
@@ -98,21 +99,30 @@ class _TaskCardState extends State<TaskCard> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-        elevation: 5,
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              cardHeader(),
-              Utils.addVerticalSpace(15),
-              cardBody(),
-              Utils.addVerticalSpace(30),
-              cardFooter()
-            ],
-          ),
-        ));
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          // boxShadow: [
+          //   BoxShadow(
+          //     color: AppTheme.colors.dark.withOpacity(0.1),
+          //     spreadRadius: 5,
+          //     blurRadius: 7,
+          //     offset: const Offset(0, 3), // changes position of shadow
+          //   ),
+          // ],
+          color: widget.cardColor!.primary),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          cardHeader(),
+          Utils.addVerticalSpace(15),
+          cardBody(),
+          Utils.addVerticalSpace(30),
+          cardFooter()
+        ],
+      ),
+    );
   }
 
   Future<void> _openTaskForm(BuildContext context) {
@@ -132,18 +142,26 @@ class _TaskCardState extends State<TaskCard> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
+          backgroundColor: AppTheme.colors.dark,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           title: Text(
             'Deletar Tarefa',
-            style: AppTheme.typo.medium(20, Colors.black, 1.5, 1.5),
+            style: AppTheme.typo.medium(20, AppTheme.colors.white, 1.5, 1.5),
           ),
           content: Text(
             'Esta ação irá deletar a sua tarefa.',
-            style: AppTheme.typo.regular(15, Colors.black, 1.5, 1.5),
+            style: AppTheme.typo.regular(15, Colors.white54, 1, 1.5),
           ),
           actions: <Widget>[
             TextButton(
               style: TextButton.styleFrom(
-                textStyle: Theme.of(context).textTheme.labelLarge,
+                foregroundColor: AppTheme.colors.dark,
+                textStyle:
+                    AppTheme.typo.medium(15, AppTheme.colors.dark, 1, 1.5),
+                backgroundColor: AppTheme.colors.white,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5)),
               ),
               child: const Text('Cancelar'),
               onPressed: () {
@@ -152,7 +170,12 @@ class _TaskCardState extends State<TaskCard> {
             ),
             TextButton(
               style: TextButton.styleFrom(
-                textStyle: Theme.of(context).textTheme.labelLarge,
+                foregroundColor: AppTheme.colors.dark,
+                textStyle:
+                    AppTheme.typo.medium(15, AppTheme.colors.dark, 1, 1.5),
+                backgroundColor: AppTheme.colors.red,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5)),
               ),
               child: const Text('Deletar'),
               onPressed: () {

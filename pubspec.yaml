@@ -44,6 +44,7 @@ dependencies:
   line_icons: ^2.0.3
   email_validator: ^2.1.17
   social_login_buttons: ^1.0.7
+  google_nav_bar: ^5.0.6
 
 dev_dependencies:
   flutter_test:

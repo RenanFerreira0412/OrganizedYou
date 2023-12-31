@@ -145,7 +145,7 @@ class _AuthUIState extends State<AuthUI> {
                 children: [
                   Text(
                     title,
-                    style: AppTheme.typo.bold(35, Colors.black, 1.5, -1.5),
+                    style: AppTheme.typo.bold(35, Colors.white, 1.5, -1.5),
                   ),
                   if (!isResetPasswordForm) ...[
                     Padding(
@@ -162,7 +162,7 @@ class _AuthUIState extends State<AuthUI> {
                         'Um link de recuperação de senha será enviado para o endereço de e-mail fornecido por você.',
                         textAlign: TextAlign.start,
                         style:
-                            AppTheme.typo.regular(15, Colors.black87, 1.5, 1.5),
+                            AppTheme.typo.regular(15, Colors.white54, 1.5, 1.5),
                       ),
                     )
                   ],
@@ -242,7 +242,11 @@ class _AuthUIState extends State<AuthUI> {
                         children: [
                           const Expanded(child: Divider()),
                           Utils.addHorizontalSpace(10),
-                          const Text('Ou'),
+                          Text(
+                            'Ou',
+                            style: AppTheme.typo
+                                .regular(15, AppTheme.colors.white, 1.5, 1.5),
+                          ),
                           Utils.addHorizontalSpace(10),
                           const Expanded(child: Divider()),
                         ],

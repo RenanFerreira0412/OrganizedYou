@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:organized_you/models/card_color.dart';
+import 'package:organized_you/theme/app_theme.dart';
 
 class Utils {
   static final messengerKey = GlobalKey<ScaffoldMessengerState>();
@@ -37,11 +39,15 @@ class Utils {
 
   static List<String> categories = ["Acadêmico", "Pessoal", "Trabalho"];
 
-  static Color? chipColor(String category) {
+  static CardColor? cardColor(String category) {
     var data = {
-      "Acadêmico": const Color(0xffEF5350),
-      "Pessoal": const Color(0xff7E57C2),
-      "Trabalho": const Color(0xff66BB6A)
+      "Acadêmico": CardColor(
+          primary: AppTheme.colors.red, secondary: AppTheme.colors.redDark),
+      "Pessoal": CardColor(
+          primary: AppTheme.colors.purple,
+          secondary: AppTheme.colors.purpleDark),
+      "Trabalho": CardColor(
+          primary: AppTheme.colors.green, secondary: AppTheme.colors.greenDark)
     };
 
     return data[category];

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icon.dart';
+import 'package:organized_you/theme/app_theme.dart';
 
 class Editor extends StatefulWidget {
   final TextEditingController controller;
@@ -53,11 +54,11 @@ class _EditorState extends State<Editor> {
         obscureText: _seePassword,
         readOnly: widget.readOnly,
         onTap: widget.action,
+        style: AppTheme.typo.regular(13, AppTheme.colors.white, 1, 1.5),
         decoration: InputDecoration(
           labelText: widget.labelText,
           hintText: widget.hintText,
           helperText: widget.hintText,
-          border: OutlineInputBorder(borderRadius: BorderRadius.circular(5)),
           suffixIcon: _isPasswordField
               ? (_seePassword
                   ? IconButton(

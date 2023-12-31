@@ -1,5 +1,8 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+
 import 'package:organized_you/components/build_task_card.dart';
+import 'package:organized_you/theme/app_theme.dart';
+import 'package:organized_you/utils/utils.dart';
 
 class AllTasks extends StatefulWidget {
   const AllTasks({super.key});
@@ -44,9 +47,9 @@ class _AllTasksState extends State<AllTasks> {
           padding: const EdgeInsets.only(left: 16, top: 20),
           child: Row(
             children: [
-              Switch(
+              CupertinoSwitch(
                 value: isFinished,
-                activeColor: Colors.blue,
+                activeColor: AppTheme.colors.offWhite,
                 onChanged: (bool value) {
                   setState(() {
                     isFinished = value;
@@ -54,8 +57,10 @@ class _AllTasksState extends State<AllTasks> {
                   });
                 },
               ),
-              const Text(
+              Utils.addHorizontalSpace(5),
+              Text(
                 'Mostrar apenas as tarefas finalizadas.',
+                style: AppTheme.typo.regular(14, AppTheme.colors.white, 1, 1.5),
                 textAlign: TextAlign.start,
               )
             ],

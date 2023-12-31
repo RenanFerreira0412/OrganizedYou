@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:organized_you/components/all_tasks.dart';
 import 'package:organized_you/components/build_task_card.dart';
 import 'package:organized_you/components/build_task_form.dart';
@@ -35,11 +36,16 @@ class _HomeMobileUIState extends State<HomeMobileUI>
     AuthService auth = Provider.of<AuthService>(context);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Suas Tarefas'),
+        elevation: 0,
+        title: const Text(
+          'Suas Tarefas',
+        ),
         actions: [
           IconButton(
             onPressed: () => auth.logout(),
-            icon: const Icon(Icons.logout_rounded),
+            icon: const Icon(
+              Icons.logout_rounded,
+            ),
           ),
         ],
       ),
@@ -57,41 +63,56 @@ class _HomeMobileUIState extends State<HomeMobileUI>
           BuildTaskCard(category: 'Trabalho'), // Tarefas profissionais
         ],
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.extended(
+        backgroundColor: Colors.grey.shade800,
         onPressed: () => _openTaskForm(context),
-        tooltip: 'Adicionar Tarefa',
-        child: const Icon(Icons.add),
+        tooltip: 'Criar Tarefa',
+        label: const Text('Criar Tarefa'),
+        icon: const Icon(Icons.add),
       ),
-      bottomNavigationBar: NavigationBar(
-        onDestinationSelected: (int index) {
-          _pageController.animateToPage(index,
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.easeInOut);
-        },
-        indicatorColor: AppTheme.colors.yellow,
-        selectedIndex: currentPageIndex,
-        destinations: const <Widget>[
-          NavigationDestination(
-            selectedIcon: Icon(Icons.home_rounded),
-            icon: Icon(Icons.home_outlined),
-            label: 'Todas',
+      bottomNavigationBar: Container(
+        color: AppTheme.colors.dark,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
+          child: GNav(
+            backgroundColor: AppTheme.colors.dark,
+            onTabChange: (int index) {
+              _pageController.animateToPage(index,
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeInOut);
+            },
+            tabBackgroundColor: Colors.grey.shade800,
+            activeColor: AppTheme.colors.white,
+            color: AppTheme.colors.white,
+            gap: 8,
+            selectedIndex: currentPageIndex,
+            padding: const EdgeInsets.all(16),
+            //elevation: 5,
+            tabs: const <GButton>[
+              GButton(
+                //selectedIcon: Icon(Icons.home_rounded),
+                icon: Icons.home_outlined,
+
+                text: 'Todas',
+              ),
+              GButton(
+                //selectedIcon: Icon(Icons.person_rounded),
+                icon: Icons.person_outline_rounded,
+                text: 'Pessoal',
+              ),
+              GButton(
+                //selectedIcon: Icon(Icons.school_rounded),
+                icon: Icons.school_outlined,
+                text: 'Acadêmico',
+              ),
+              GButton(
+                //selectedIcon: Icon(Icons.work_rounded),
+                icon: Icons.work_outline_rounded,
+                text: 'Trabalho',
+              ),
+            ],
           ),
-          NavigationDestination(
-            selectedIcon: Icon(Icons.person_rounded),
-            icon: Icon(Icons.person_outline_rounded),
-            label: 'Pessoal',
-          ),
-          NavigationDestination(
-            selectedIcon: Icon(Icons.school_rounded),
-            icon: Icon(Icons.school_outlined),
-            label: 'Acadêmico',
-          ),
-          NavigationDestination(
-            selectedIcon: Icon(Icons.work_rounded),
-            icon: Icon(Icons.work_outline_rounded),
-            label: 'Trabalho',
-          ),
-        ],
+        ),
       ),
     );
   }
